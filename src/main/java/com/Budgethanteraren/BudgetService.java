@@ -15,4 +15,13 @@ public class BudgetService {
         repository.add(transaction);
     }
 
+    public double getBalance() {
+        return repository.findAll()
+                .stream()
+                .mapToDouble(t -> t.type() == TransactionType.INCOME
+                        ? t.amount()
+                        : -t.amount())
+                .sum();
+    }
+
 }
