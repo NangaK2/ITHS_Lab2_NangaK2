@@ -22,9 +22,4 @@ public class Repository<T> {
                 .toList();
     }
 
-    //Behöver vi en metod för att ta bort en specifik item?
-    //public void remove(T item) {
-    //    items.remove(item);
-    //}
-
 }
