@@ -1,5 +1,6 @@
 package com.Budgethanteraren;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,8 @@ public class BudgetService {
     public double getBalance() {
         return repository.findAll()
                 .stream()
-                .mapToDouble(transaction -> transaction.type() == TransactionType.INCOME
+                .mapToDouble(transaction ->
+                        transaction.type() == TransactionType.INCOME
                         ? transaction.amount()
                         : -transaction.amount())
                 .sum();
@@ -37,6 +39,14 @@ public class BudgetService {
                                         ? transaction.amount()
                                         : -transaction.amount())
                 ));
+    }
+
+    public List<Transaction> getByType(TransactionType type) {
+        return repository.findAll()
+                .stream()
+                .filter(transaction ->
+                        transaction.type() == type)
+                .toList();
     }
 
 }
