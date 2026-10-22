@@ -1,8 +1,7 @@
 package com.Budgethanteraren;
 
-public class TransactionType {
-    public enum Type {
+public enum TransactionType {
         INCOME,
         EXPENSE
     }
-}
+
