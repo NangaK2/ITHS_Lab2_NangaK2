@@ -32,11 +32,11 @@ public class BudgetService {
     }
 
     //Calculate total-sum for each category.
-    public Map<String, Double> getCategorySummary() {
+    public Map<String, Double> getCategorySum() {
         return repository.findAll()
                 .stream()
                 .collect(Collectors.groupingBy(
-                        Transaction::category,
+                        transaction -> transaction.category().toLowerCase(),
                         Collectors.summingDouble(transaction ->
                                 transaction.type() == TransactionType.INCOME
                                         ? transaction.amount()
