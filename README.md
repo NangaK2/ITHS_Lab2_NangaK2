@@ -15,7 +15,7 @@ Funktioner
 * Stream API & Generics
 * CSV-lagring
 
-Problem
+Problem:
 JUnit-testet getCategorySumShouldSumItemsFromTheSameCategory() misslyckades.
 
 Förväntat: 30000. Fick: null
@@ -29,4 +29,14 @@ Transaction::category till transaction -> transaction.category().toLowerCase(). 
 den returnerade mapens keys enbart innehåller små bokstäver. Testet lyckades därefter. Syftet med denna ändring
 är att säkerställa att kategorinamnen är lika oavsett om de är skrivna med stora eller små bokstäver. 
 
-Efter ändringen passerade alla tester.
+Problem:
+JUnit-testet getByCategoryShouldReturnOnlyTransactionsForGivenCategory() misslyckades.
+
+Förväntat: 1. Fick: 0
+
+Orsak: Funktionen getByCategory() är case-sensitive.
+
+Felsökning: Breakpoint sattes i getByCategory(). Debugger användes stegvis och variabler inspekterades.
+
+Lösning: Ändrade stream-operator från transaction -> transaction.category().equals(category) till 
+transaction -> transaction.category().equalsIgnoreCase(category). Testet lyckades därefter.

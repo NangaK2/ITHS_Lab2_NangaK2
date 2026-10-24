@@ -65,7 +65,7 @@ public class BudgetService {
     //This method retrieves transactions by category
     public List<Transaction> getByCategory(String category) {
         return repository.findWhere(
-                transaction -> transaction.category().equals(category)
+                transaction -> transaction.category().equalsIgnoreCase(category)
         );
     }
 
