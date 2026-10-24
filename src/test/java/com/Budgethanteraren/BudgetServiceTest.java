@@ -172,5 +172,25 @@ class BudgetServiceTest {
         assertEquals(2, result2.size());
     }
 
+    @Test
+    void shouldThrowExceptionWhenAmountIsZero() {
+        //Arrange
+        Repository<Transaction> repository = new Repository<>();
+        BudgetService budgetService = new BudgetService(repository);
+        //Act & Assert
+        assertThrows(InvalidTransactionException.class,() ->
+                budgetService.addTransaction(new Transaction(LocalDate.now(), "Salary", 0, TransactionType.INCOME)));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenAmountIsNegative() {
+        //Arrange
+        Repository<Transaction> repository = new Repository<>();
+        BudgetService budgetService = new BudgetService(repository);
+        //Act & Assert
+        assertThrows(InvalidTransactionException.class,() ->
+                budgetService.addTransaction(new Transaction(LocalDate.now(), "Salary", -1000, TransactionType.INCOME)));
+    }
+
 }
 
