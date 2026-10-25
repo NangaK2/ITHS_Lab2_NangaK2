@@ -12,6 +12,10 @@ public class Repository<T> {
         items.add(item);
     }
 
+    public void addAll(List<T> newItems) {
+        items.addAll(newItems);
+    }
+
     public List<T> findAll() {
         return List.copyOf(items);
     }

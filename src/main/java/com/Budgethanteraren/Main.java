@@ -15,8 +15,23 @@ public class Main {
     private static final FileService fileService = new FileService("transactions.csv");
 
     static void main() {
-        logger.setLevel(Level.INFO);
+        logger.setLevel(Level.WARNING);
         Scanner scanner = new Scanner(System.in);
+
+        try {
+            List <Transaction> savedTransactions = fileService.load();
+            if (savedTransactions.isEmpty()) {
+                IO.println("There are no transactions saved.");
+                logger.info("There are no transactions saved.");
+            } else {
+                repository.addAll(savedTransactions);
+                IO.println("Transactions loaded from file.");
+                logger.info("Transactions loaded from file.");
+            }
+        } catch (Exception e) {
+            IO.println("Failed to load transactions from file.");
+            logger.severe("Failed to load transactions from file." + e.getMessage());
+        }
 
         boolean running = true;
         int choice;
