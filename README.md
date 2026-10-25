@@ -39,4 +39,28 @@ Orsak: Funktionen getByCategory() är case-sensitive.
 Felsökning: Breakpoint sattes i getByCategory(). Debugger användes stegvis och variabler inspekterades.
 
 Lösning: Ändrade stream-operator från transaction -> transaction.category().equals(category) till 
-transaction -> transaction.category().equalsIgnoreCase(category). Testet lyckades därefter.
+transaction -> transaction.category().equalsIgnoreCase(category). Testet lyckades därefter. Den här ändringen 
+är viktig för att säkerställa att användaren kan söka efter transaktioner utan att kategorinamnet är 
+beroende av stora eller små bokstäver. Detta gör att användaren kan söka efter kategorier på ett 
+flexibelt sätt och förbättrar användarvänligheten.
+
+Reflektion:
+
+Implementerade logger när main klassen byggdes. Eftersom det är i main som majoriteten av programmets 
+inmatning från användaren sker så är det viktigt att logga användarinteraktioner och eventuella fel som 
+uppkommer under användningen av programmet. Loggern hjälpte till att felsöka problem och förbättrade
+användarvänligheten genom att ge insikter om hur programmet fungerar och vilka användarinteraktioner som utförs.
+Där det gick byggdes programmet på ett sätt för att minimera behovet av felhantering som t.ex. vid menyvalen
+där scanner.hasNextInt() används istället för try-catch med ParseInt(). Vidare vid inmatningen av amount
+användes scanner.hasNextDouble() istället för try-catch med ParseDouble() för att minimera behovet av felhantering.
+
+Den egna implementerade InvalidTransactionException-klassen används för att hantera fel som 
+uppstår när användaren försöker lägga till en transaktion med ogiltiga värden (0 eller negativt amount). 
+Detta hjälper till att förbättra användarvänligheten genom att ge användaren tydliga meddelanden om vad som är fel 
+och hur de kan åtgärda det. En möjlig ändring är att istället lägga till en egen konstruktor i Transaction klassen
+där man kontrollerar att amount är större än 0 annars kasta InvalidTransactionException. En transaktion hade alltså
+inte då tillåtits att skapas vid fel amount-värde. Denna kontroll sker just nu i addTransaction-metoden 
+i BudgetService-klassen, vilket innebär att ett transaktion-object med fel amount-value 'får' skapas, men tillåts inte
+att läggas till i repositoryn senare istället.
+
+
