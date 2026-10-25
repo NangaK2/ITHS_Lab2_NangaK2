@@ -25,7 +25,7 @@ public class Main {
             IO.println("1. Add transaction");
             IO.println("2. Show all transactions");
             IO.println("3. Show balance and summary by category");
-            IO.println("4. Filter transaktions");
+            IO.println("4. Filter transactions");
             IO.println("5. Save to file");
             IO.println("6. Exit");
 
@@ -86,16 +86,31 @@ public class Main {
                     }
                 }
 
-                case 2 -> repository.findAll()
-                        .forEach(IO::println);
+                case 2 -> {
+                    List <Transaction> allTransactions = repository.findAll();
+                    if (allTransactions.isEmpty()) {
+                        IO.println("No transactions registered");
+                    }
+                    else {
+                        allTransactions.forEach(IO::println);
+                        logger.info("Transactions retrieved from repository");
+                    }
+                }
 
                 case 3 -> {
                         IO.println("Balance: " + budgetService.getBalance());
+                        logger.info("Balance retrieved");
                         Map<String, Double> mapWithCategorySum = budgetService.getCategorySum();
-                        IO.println(mapWithCategorySum);
+                        if(mapWithCategorySum.isEmpty()) {
+                            IO.println("No transactions registered");
+                        }
+                        else {
+                            IO.println(mapWithCategorySum);
+                            logger.info("Category sums retrieved from repository");
+                        }
                 }
 
-                case 4 -> filterTransactions(scanner);
+                case 4 -> filterTransactions(scanner); //Opening sub-menu
 
                 case 5 -> {
                     IO.println("Saving to file...");
@@ -116,24 +131,36 @@ public class Main {
 
     private static void filterTransactions(Scanner scanner) {
         IO.println("""
+                ----- Sub-menu -----
                 How do you want to filter transactions?
                 1. Show transactions of type INCOME.
                 2. Show transactions of type EXPENSE.
                 3. Show transactions by date.
-                4. Back to main menu.
+                4. Show transactions by category.
+                5. Back to main menu.
                 """);
 
         String input = scanner.nextLine();
 
         switch (input) {
             case "1":
-                budgetService.getByType(TransactionType.INCOME)
-                        .forEach(IO::println);
+                List<Transaction> transactionsByTypeIncome = budgetService.getByType(TransactionType.INCOME);
+                if(transactionsByTypeIncome.isEmpty()) {
+                    IO.println("No transactions registered of type INCOME");
+                } else {
+                    transactionsByTypeIncome.forEach(IO::println);
+                    logger.info("Transactions retrieved by type INCOME");
+                }
                 break;
 
             case "2":
-                budgetService.getByType(TransactionType.EXPENSE)
-                        .forEach(IO::println);
+                List<Transaction> transactionsByTypeExpense = budgetService.getByType(TransactionType.EXPENSE);
+                if (transactionsByTypeExpense.isEmpty()) {
+                    IO.println("No transactions registered of type EXPENSE");
+                } else {
+                    transactionsByTypeExpense.forEach(IO::println);
+                    logger.info("Transactions retrieved by type EXPENSE");
+                }
                 break;
 
             case "3":
@@ -145,6 +172,7 @@ public class Main {
                         date = LocalDate.parse(dateInput);
                         if (date.isAfter(LocalDate.now())) {
                             IO.println("Date has not yet occurred. Enter today's date or an earlier date.");
+                            logger.info("Date has not yet occurred. Enter today's date or an earlier date.");
                             continue;
                         }
                         break;
@@ -155,19 +183,32 @@ public class Main {
                     }
                 }
 
-                List<Transaction> transactions = budgetService.getByDate(date);
-                if (transactions.isEmpty()) {
-                    IO.println("No transactions registered on this date");
+                List<Transaction> transactionsByDate = budgetService.getByDate(date);
+                if (transactionsByDate.isEmpty()) {
+                    IO.println("No transactions registered on this date: " + date);
                 } else {
-                    transactions.forEach(IO::println);
+                    transactionsByDate.forEach(IO::println);
+                    logger.info("Transactions retrieved by date");
                 }
                 break;
 
             case "4":
+                IO.println("Enter a category: ");
+                String category = scanner.nextLine().trim();
+                List<Transaction> transactionsByCategory = budgetService.getByCategory(category);
+                if (transactionsByCategory.isEmpty()) {
+                    IO.println("No transactions registered in this category: " + category);
+                } else {
+                    transactionsByCategory.forEach(IO::println);
+                    logger.info("Transactions retrieved by category");
+                }
+                break;
+
+            case "5":
                 break;
 
             default:
-                IO.println("Invalid choice, please enter a number between 1 and 4!");
+                IO.println("Invalid choice, please enter a number between 1 and 5!");
         }
     }
 
