@@ -63,12 +63,17 @@ public class FileService {
                     continue;
                 }
 
-                //Improvements that could be made:
-                //Implement FutureDateException here with e.g. name FutureDateException to handle future dates
-                //Check if parts[1] is empty i.e no category -> ""
-                //Check if parts[2] is 0 or negative i.e amount -> 0 or negative
-
-
+                //Updated so program can handle reading invalid transactions from file
+                LocalDate date = LocalDate.parse(parts[0]);
+                if (date.isAfter(LocalDate.now())) {
+                    throw new InvalidTransactionException("Date cannot be in the future");
+                }
+                else if (parts[1].isEmpty()) {
+                    throw new InvalidTransactionException("Category cannot be empty");
+                }
+                else if (Double.parseDouble(parts[2]) <= 0) {
+                    throw new InvalidTransactionException("Amount cannot be 0 or negative");
+                }
 
                 transactions.add(new Transaction(
                                 LocalDate.parse(parts[0]),

@@ -108,6 +108,11 @@ i Transaction-klassens konstruktor istället, vilket jag nämnde tidigare. Ett a
 (så länge de är giltiga) manuellt i filen, vilket inte är "tillåtet". Ogiltiga datum hanteras dock fint på grund av LocalDate.parse, 
 därav så hade ytterligare en egen exception-klass kunnat implementeras här med t.ex. namnet FutureDateException.
 
+Uppdatering: 
 
+Ovanstående (stycket) 'förbättringar som kan göras' har nu implementerats genom att enbart utnyttja mitt egna InvalidTransactionException.
+Så om man vill kan man ändra filen manuellt och skriva in t.ex. negativa värden för amount, så kommer inte inläsningen att nu tillåtas 
+och ett felmeddelande visar vad som är fel på grund av throw new InvalidTransactionException("Amount cannot be 0 or negative"). Detsamma
+gäller för framtida datum och saknad category namn.
 
 
