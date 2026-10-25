@@ -13,7 +13,7 @@ public class Main {
     private static final BudgetService budgetService = new BudgetService(repository);
 
     static void main() {
-        logger.setLevel(Level.INFO);
+        logger.setLevel(Level.WARNING);
         Scanner scanner = new Scanner(System.in);
 
         boolean running = true;
@@ -79,6 +79,7 @@ public class Main {
                     try {
                         Transaction transaction = new Transaction(LocalDate.now(), category, amount, type);
                         budgetService.addTransaction(transaction);
+                        IO.println("Transaction added");
                         logger.info("Transaction added: " + transaction);
                     } catch (InvalidTransactionException e) {
                         IO.println("Could not add transaction");
