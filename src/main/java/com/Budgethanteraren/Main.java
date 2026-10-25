@@ -1,5 +1,6 @@
 package com.Budgethanteraren;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -11,9 +12,10 @@ public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
     private static final Repository<Transaction> repository = new Repository<>();
     private static final BudgetService budgetService = new BudgetService(repository);
+    private static final FileService fileService = new FileService("transactions.csv");
 
     static void main() {
-        logger.setLevel(Level.WARNING);
+        logger.setLevel(Level.INFO);
         Scanner scanner = new Scanner(System.in);
 
         boolean running = true;
@@ -115,9 +117,23 @@ public class Main {
 
                 case 5 -> {
                     IO.println("Saving to file...");
-                    //Last thing to implement
-                    //budgetService.saveToFile();
-                    IO.println("Saved to file!");
+                    List<Transaction> allTransactionsToSave = repository.findAll();
+                    if (allTransactionsToSave.isEmpty()) {
+                        IO.println("There are no transactions to save");
+                        logger.info("There are no transactions to save");
+                    }
+                    else {
+                        logger.info("Transactions retrieved from repository");
+
+                        try {
+                            fileService.save(allTransactionsToSave);
+                            IO.println("Transactions saved to file.");
+                            logger.info("Transactions saved to file.");
+                        } catch (IOException e) {
+                            IO.println("Failed to save file.");
+                            logger.severe("Failed to save file. " + e.getMessage());
+                        }
+                    }
                 }
 
                 case 6 -> {
