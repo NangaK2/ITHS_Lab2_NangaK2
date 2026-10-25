@@ -92,6 +92,22 @@ inte då tillåtits att skapas vid fel amount-värde. Denna kontroll sker just n
 i BudgetService-klassen, vilket innebär att ett transaktion-object med fel amount-value 'får' skapas, men tillåts inte
 att läggas till i repositoryn senare istället.
 
+Slutligen implementerades filhanteringen. Klassen FileService används för att hantera filer som 
+används för att spara och ladda budgetdata. Den innehåller både en metod för att spara budgetdata till en fil 
+samt en metod för att läsa budgetdata från en fil. Logger används för att logga information om filhanteringen, 
+så att användaren kan se vad som händer när filer sparas och laddas. Undantagen som kan kastas av FileService hanteras
+dock inte i den egna klassen, utan det skickas upp och hanteras i Main. Här hade jag kunnat skapa ytterligare en egen
+exception-klass som istället extender IOException som hade till exempel kunnat kallas FileHandlingException. 
+
+Förbättringar som kan göras:
+
+Vidare är inte programmet helt anpassat för egna manuella ändringar i filen som ska läsas in.
+Det var inte helt tydligt i uppgiftsbeskrivningen (rimlig felhantering). Det går t.ex. i dagsläget att sätta amount till ett
+negativt värde, manuellt i filen. Men en enkel lösning för specifikt det problemet är att implementera mitt egna InvalidTransactionException
+i Transaction-klassens konstruktor istället, vilket jag nämnde tidigare. Ett annat problem är att det går att skriva in framtida datum
+(så länge de är giltiga) manuellt i filen, vilket inte är "tillåtet". Ogiltiga datum hanteras dock fint på grund av LocalDate.parse, 
+därav så hade ytterligare en egen exception-klass kunnat implementeras här med t.ex. namnet FutureDateException.
+
 
 
 

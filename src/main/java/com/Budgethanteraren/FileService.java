@@ -63,6 +63,13 @@ public class FileService {
                     continue;
                 }
 
+                //Improvements that could be made:
+                //Implement FutureDateException here with e.g. name FutureDateException to handle future dates
+                //Check if parts[1] is empty i.e no category -> ""
+                //Check if parts[2] is 0 or negative i.e amount -> 0 or negative
+
+
+
                 transactions.add(new Transaction(
                                 LocalDate.parse(parts[0]),
                                 parts[1],
