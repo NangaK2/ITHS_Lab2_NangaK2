@@ -60,7 +60,12 @@ public class Main {
             switch (choice) {
                 case 1 -> {
                     IO.println("Category:");
-                    String category = scanner.nextLine();
+                    String category = scanner.nextLine().trim();
+                    if (category.trim().isEmpty()) {
+                        IO.println("Category cannot be empty");
+                        logger.warning("No category was entered");
+                        continue;
+                    }
 
                     IO.println("Amount:");
                     double amount;

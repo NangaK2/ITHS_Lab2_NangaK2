@@ -68,7 +68,7 @@ public class FileService {
                 if (date.isAfter(LocalDate.now())) {
                     throw new InvalidTransactionException("Date cannot be in the future");
                 }
-                else if (parts[1].isEmpty()) {
+                else if (parts[1].trim().isEmpty()) {
                     throw new InvalidTransactionException("Category cannot be empty");
                 }
                 else if (Double.parseDouble(parts[2]) <= 0) {
@@ -77,7 +77,7 @@ public class FileService {
 
                 transactions.add(new Transaction(
                                 LocalDate.parse(parts[0]),
-                                parts[1],
+                                parts[1].trim(),
                                 Double.parseDouble(parts[2]),
                                 TransactionType.valueOf(parts[3])
                         )
